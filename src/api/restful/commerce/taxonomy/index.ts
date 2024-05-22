@@ -1,16 +1,15 @@
-import {operations} from '../../../../types/restful/specs/commerce_taxonomy_v1_oas3.js';
-import Restful, {OpenApi} from '../../index.js';
+import { operations } from "../../../../types/restful/specs/commerce_taxonomy_v1_oas3.js";
+import Restful, { OpenApi } from "../../index.js";
 
 /**
  * Use the Taxonomy API to discover the most appropriate eBay categories under which sellers can offer inventory items
  * for sale, and the most likely categories under which buyers can browse or search for items to purchase.
  */
 export default class Taxonomy extends Restful implements OpenApi<operations> {
-
-  static id = 'Taxonomy';
+  static id = "Taxonomy";
 
   get basePath(): string {
-    return '/commerce/taxonomy/v1';
+    return "/commerce/taxonomy/v1";
   }
 
   /**
@@ -22,8 +21,8 @@ export default class Taxonomy extends Restful implements OpenApi<operations> {
   public getDefaultCategoryTreeId(marketplaceId: string) {
     return this.get(`/get_default_category_tree_id`, {
       params: {
-        marketplace_id: marketplaceId
-      }
+        marketplace_id: marketplaceId,
+      },
     });
   }
 
@@ -46,12 +45,14 @@ export default class Taxonomy extends Restful implements OpenApi<operations> {
    * @param categoryId The unique identifier of the category at the top of the subtree being requested.
    */
   public getCategorySubtree(categoryTreeId: string, categoryId: string) {
-    categoryTreeId = encodeURIComponent(categoryTreeId);
-    return this.get(`/category_tree/${categoryTreeId}/get_category_subtree`, {
-      params: {
-        category_id: categoryId
-      }
-    });
+    return this.get(
+      `/category_tree/${encodeURIComponent(categoryTreeId)}/get_category_subtree`,
+      {
+        params: {
+          category_id: categoryId,
+        },
+      },
+    );
   }
 
   /**
@@ -63,11 +64,14 @@ export default class Taxonomy extends Restful implements OpenApi<operations> {
    * @param q A quoted string that describes or characterizes the item being offered for sale.
    */
   public getCategorySuggestions(categoryTreeId: string, q: string) {
-    return this.get(`/category_tree/${categoryTreeId}/get_category_suggestions`, {
-      params: {
-        q
-      }
-    });
+    return this.get(
+      `/category_tree/${categoryTreeId}/get_category_suggestions`,
+      {
+        params: {
+          q,
+        },
+      },
+    );
   }
 
   /**
@@ -79,12 +83,14 @@ export default class Taxonomy extends Restful implements OpenApi<operations> {
    * @param categoryId The unique identifier of the leaf category for which aspects are being requested.
    */
   public getItemAspectsForCategory(categoryTreeId: string, categoryId: string) {
-    categoryTreeId = encodeURIComponent(categoryTreeId);
-    return this.get(`/category_tree/${categoryTreeId}/get_item_aspects_for_category`, {
-      params: {
-        category_id: categoryId
-      }
-    });
+    return this.get(
+      `/category_tree/${encodeURIComponent(categoryTreeId)}/get_item_aspects_for_category`,
+      {
+        params: {
+          category_id: categoryId,
+        },
+      },
+    );
   }
 
   /**
@@ -96,13 +102,18 @@ export default class Taxonomy extends Restful implements OpenApi<operations> {
    *
    * @param categoryId The unique identifier of an eBay category.
    */
-  public getCompatibilityProperties(categoryTreeId: string, categoryId: string) {
-    categoryTreeId = encodeURIComponent(categoryTreeId);
-    return this.get(`/category_tree/${categoryTreeId}/get_compatibility_properties`, {
-      params: {
-        category_id: categoryId
-      }
-    });
+  public getCompatibilityProperties(
+    categoryTreeId: string,
+    categoryId: string,
+  ) {
+    return this.get(
+      `/category_tree/${encodeURIComponent(categoryTreeId)}/get_compatibility_properties`,
+      {
+        params: {
+          category_id: categoryId,
+        },
+      },
+    );
   }
 
   /**
@@ -117,15 +128,19 @@ export default class Taxonomy extends Restful implements OpenApi<operations> {
   public getCompatibilityPropertyValues(
     categoryTreeId: string,
     categoryId: string,
-    compatibilityProperty: string
+    compatibilityProperty: string,
+    filter: string,
   ) {
-    categoryTreeId = encodeURIComponent(categoryTreeId);
-    return this.get(`/category_tree/${categoryTreeId}/get_compatibility_property_values`, {
-      params: {
-        category_id: categoryId,
-        compatibility_property: compatibilityProperty
-      }
-    });
+    return this.get(
+      `/category_tree/${encodeURIComponent(categoryTreeId)}/get_compatibility_property_values`,
+      {
+        params: {
+          category_id: categoryId,
+          compatibility_property: compatibilityProperty,
+          filter,
+        },
+      },
+    );
   }
 
   /**
@@ -136,9 +151,11 @@ export default class Taxonomy extends Restful implements OpenApi<operations> {
    * @return A JSON GZIP compressed file buffer
    */
   public fetchItemAspects(categoryTreeId: string): Promise<Buffer> {
-    categoryTreeId = encodeURIComponent(categoryTreeId);
-    return this.get(`/category_tree/${categoryTreeId}/fetch_item_aspects`, {
-      responseType: 'arraybuffer'
-    });
+    return this.get(
+      `/category_tree/${encodeURIComponent(categoryTreeId)}/fetch_item_aspects`,
+      {
+        responseType: "arraybuffer",
+      },
+    );
   }
 }
